@@ -1,36 +1,36 @@
-# JWT Authentication Console Application(console-based client-server model in Java)
+# Data Security - Phase 3
+JWT Authentication Console Application(console-based client-server model in Java)
 
-## Overview
-This console application demonstrates the use of JSON Web Tokens (JWT) for authenticating users. The application allows users to register, log in, and access protected resources using JWTs.
+Professor [Arbena Musa](https://github.com/ArbenaMusa)
 
-## Features
-- User Registration
-- User Login
-- JWT Generation
-- JWT Validation
-- Access to Protected Resources
+# Language
+This project is developed in Java language.
 
-## Prerequisites
-- Java 8 or higher
-- [Maven](https://maven.apache.org/) or [Gradle](https://gradle.org/)
-- [JWT Library](https://github.com/jwtk/jjwt) (included in `pom.xml` or `build.gradle`)
+# Description of the algorithm
 
+The JWT Authentication Console Application is a Java-based client-server model tailored for secure authentication processes utilizing JSON Web Tokens (JWT). Employing a console interface, it enables users to interact with the authentication server seamlessly. JWTs, acting as digitally signed tokens, securely transmit user information between the client and server. The algorithm utilizes cryptographic techniques to ensure the confidentiality and integrity of the tokens exchanged. Through a series of protocols and algorithms, including HMAC or RSA for token signing, the application verifies user identities reliably. Its console-based architecture guarantees user-friendly operation and cross-platform compatibility, making it an efficient solution for authentication requirements across diverse environments.
 
+ Key Components of the program:
 
-## 2 main components are needed: 
--the server
--the client
+ 1. JWTClient:
+  Socket Communication: Establishes a connection with the server using a socket.
+  User Input Handling: Prompts the user for username and password via console input.
+  Data Exchange: Sends the username and password to the server for authentication.
+  Response Handling: Receives and processes the server's response, including the JWT token upon successful authentication.
+  User Interaction Loop: Allows the user to perform actions such as requesting protected data or logging out through console commands.
+ 2. JWTServer:
+  Socket Server: Listens for client connections on a specified port.
+  Client Handling: Accepts client connections and creates a new thread to handle each client      separately.
+  Authentication: Validates user credentials against a predefined user database.
+  JWT Generation: Creates a JWT token upon successful authentication, incorporating user     
+  information and expiration time.
+  JWT Validation: Verifies the received JWT token's authenticity and integrity using RSA256     
+  algorithm.
+  Data Exchange: Responds to client requests for protected data or logout commands.
+  RSA Key Pair Generation: Generates RSA public-private key pair used for JWT signing and   
+  verification.
 
-The server will handle user registration, login, JWT generation, and validation, while the client will interact with the server to perform these operations.
-
-## Server-Side
-1.Dependencies: Use Maven to manage dependencies, including the JWT library (jjwt).
-2.Server Implementation: Create classes for user management, JWT handling, and server logic.
-
-## Client-Side
-
-
-## HOW TO RUN:
+## How to run the program:
 1.Compile the Server and Client:
 mvn clean install
 2.Run the Server:
@@ -39,21 +39,3 @@ java -cp target/jwt-auth-server-1.0-SNAPSHOT.jar org.example.Main
 java -cp target/jwt-auth-server-1.0-SNAPSHOT.jar org.example.Client
 
 
-## Usage
-1.Register a User:
--Action: 'register'
--Enter username and password when prompted.
-
-2.Login:
--Action: login
--Enter username and password when prompted.
--A JWT token will be provided upon successful login.
-
-3.Access Protected Resource:
--Action: access
--Enter the JWT token when prompted.
--Access will be granted if the token is valid.
-
-## Acknowledgments
-https://jwt.io/
-https://jwt.io/libraries
