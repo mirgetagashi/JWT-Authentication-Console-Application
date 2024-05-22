@@ -25,6 +25,7 @@ public class JWTServer {
     public static void main(String[] args) {
         try (ServerSocket serverSocket = new ServerSocket(12345)) {
             System.out.println("Server is listening on port 12345");
+            System.out.println("Waiting for connections...");
 
             while (true) {
                 Socket socket = serverSocket.accept();
@@ -50,13 +51,13 @@ public class JWTServer {
 
                 String username = in.readUTF();
                 String password = in.readUTF();
-                System.out.println("Received credentials - Username: " + username);
+                System.out.println("Credentials received. Verifying..." );
 
                 if (authenticate(username, password)) {
                     String token = createJWT(username);
                     out.writeUTF(token);
                     out.flush();
-                    System.out.println("JWT issued to " + username);
+                    System.out.println("Authentication successful. JWT issued to " + username);
                 } else {
                     out.writeUTF("Invalid credentials");
                     out.flush();
@@ -70,7 +71,7 @@ public class JWTServer {
                     } else if (command.equals("request_data")) {
                         String token = in.readUTF();
                         if (validateJWT(token)) {
-                            out.writeUTF("Protected data: This is protected data.");
+                            out.writeUTF("Protected data received: This is protected data.");
                             out.flush();
                         } else {
                             out.writeUTF("401 Unauthorized");
