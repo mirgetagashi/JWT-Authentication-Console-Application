@@ -20,7 +20,7 @@ The JWT Authentication Console Application is a Java-based client-server model t
   - User Interaction Loop: Allows the user to perform actions such as requesting protected data or logging out through console commands.
 2. JWTServer:
   - Socket Server: Listens for client connections on a specified port.
-  - Client Handling: Accepts client connections and creates a new thread to handle each client      separately.
+  - Client Handling: Accepts client connections and creates a new thread to handle each client separately.
   - Authentication: Validates user credentials against a predefined user database.
   - JWT Generation: Creates a JWT token upon successful authentication, incorporating user     
     information and expiration time.
@@ -31,12 +31,13 @@ The JWT Authentication Console Application is a Java-based client-server model t
   verification.
 
 ## How to run the program:
-1. Compile the Server and Client:
-mvn clean install
-2. Run the Server:
-java -cp target/jwt-auth-server-1.0-SNAPSHOT.jar org.example.Main
-3. Run the Client:
-java -cp target/jwt-auth-server-1.0-SNAPSHOT.jar org.example.Client
+1. Start the Server.
+
+2. Start the Client.
+
+3. Username and Password.
+
+4. Select an operation: "Reques data" or  "Log Out".
 
 
 ## Results 
