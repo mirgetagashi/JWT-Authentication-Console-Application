@@ -1,24 +1,21 @@
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.auth0.jwt.interfaces.JWTVerifier;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-
-import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.security.Key;
+import java.security.*;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.time.Instant;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class JWTServer {
-    private static final String SECRET_KEY = "secret";
+    private static final KeyPair keyPair = generateRSAKeyPair();
+
     private static final Map<String, String> userDatabase = new HashMap<>();
 
     static {
@@ -92,43 +89,37 @@ public class JWTServer {
         }
 
         private String createJWT(String username) {
-            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+            Algorithm algorithm = Algorithm.RSA256((RSAPublicKey) keyPair.getPublic(), (RSAPrivateKey) keyPair.getPrivate());
             return JWT.create()
                     .withIssuer("auth0")
                     .withSubject(username)
                     .withIssuedAt(Date.from(Instant.now()))
-                    .withExpiresAt(Date.from(Instant.now().plusSeconds(60)))
+                    .withExpiresAt(Date.from(Instant.now().plusSeconds(10000)))
                     .sign(algorithm);
         }
 
-//        private static String createJWT(String username) {
-//            SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-//
-//            long nowMillis = System.currentTimeMillis();
-//            Date now = new Date(nowMillis);
-//
-//            byte[] apiKeySecretBytes = Base64.getEncoder().encode(SECRET_KEY.getBytes());
-//            Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
-//
-//            JwtBuilder builder = Jwts.builder()
-//                    .setSubject(username)
-//                    .setIssuedAt(now)
-//                    .signWith(signingKey, signatureAlgorithm);
-//
-//            return builder.compact();
-//        }
-
         private boolean validateJWT(String token) {
             try {
-                Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+                Algorithm algorithm = Algorithm.RSA256((RSAPublicKey) keyPair.getPublic(), (RSAPrivateKey) keyPair.getPrivate());
                 JWTVerifier verifier = JWT.require(algorithm)
                         .withIssuer("auth0")
                         .build();
-                DecodedJWT jwt = verifier.verify(token);
+                DecodedJWT jwt = ((JWTVerifier) verifier).verify(token);
                 return true;
             } catch (Exception e) {
                 return false;
             }
         }
+    }
+
+    private static KeyPair generateRSAKeyPair() {
+        try {
+            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+            keyPairGenerator.initialize(2048);
+            return keyPairGenerator.generateKeyPair();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

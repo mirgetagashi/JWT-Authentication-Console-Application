@@ -36,6 +36,7 @@ public class JWTClient {
                     out.writeUTF("logout");
                     out.flush();
                     System.out.println("Logged out");
+                    token = null;
                     break;
                 } else if (command.equals("request_data")) {
                     out.writeUTF("request_data");
