@@ -37,7 +37,7 @@ The JWT Authentication Console Application is a Java-based client-server model t
 
 3. Username and Password.
 
-4. Select an operation: "Reques data" or  "Log Out".
+4. Select an operation: "Request data" or  "Log Out".
 
 
 ## Results 
